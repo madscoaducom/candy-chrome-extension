@@ -1,0 +1,43 @@
+<html>
+  <head><title>My Test Extension Options</title></head>
+  <script type="text/javascript">
+
+    // Saves options to localStorage.
+  function save_options() {
+    var select = document.getElementById("chat_name");
+    var chat_name = select.value;
+    localStorage["chat_name"] = chat_name;
+
+    // Update status to let user know options were saved.
+    var status = document.getElementById("status");
+    status.innerHTML = "Options Saved.";
+    setTimeout(function() {
+        status.innerHTML = "";
+        }, 750);
+
+    var select = document.getElementById("display_chat_name");
+    select.innerHTML = chat_name;
+  }
+
+// Restores select box state to saved value from localStorage.
+function restore_options() {
+  var chat_name = localStorage["chat_name"];
+  if (!chat_name) {
+    return;
+  }
+  var select = document.getElementById("display_chat_name");
+  select.innerHTML = chat_name;
+}
+
+</script>
+
+<body onload="restore_options()">
+
+  <p id="display_chat_name"></p>
+  <label> Update name:</label>
+  <input type="text" id="chat_name"></input>
+
+  <br>
+  <button onclick="save_options()">Save</button><p id="status"></p>
+</body>
+</html>

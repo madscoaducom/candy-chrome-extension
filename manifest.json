@@ -1,0 +1,19 @@
+{
+  "name": "Candy Chat Chrome Extension",
+  "version": "0.1",
+  "description": "",
+  "browser_action": {
+    "default_icon": "img/chat-grey.png"
+  },
+  "background_page": "background.html",
+  "options_page": "options.html",
+  "content_scripts": [{
+    "matches": ["http://projects.koeniglich.ch/candy/*"],
+    "js": ["jquery.min.js", "inject.js"]
+  }],
+  "permissions": [
+    "tabs",
+    "http://projects.koeniglich.ch/candy/",
+    "http://ajax.googleapis.com/"
+  ]
+}
