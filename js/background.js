@@ -1,5 +1,3 @@
-var chatUrl = "http://projects.koeniglich.ch/candy/";
-
 function getTab(tabUrl, callback) {
   chrome.tabs.getAllInWindow(undefined, function(tabs) {
     for (var i = 0, tab; tab = tabs[i]; i++) {
@@ -12,13 +10,13 @@ function getTab(tabUrl, callback) {
 }
 
 function openChat() {
-  getTab(chatUrl, function(tab) {
+  getTab(localStorage["chat_url"], function(tab) {
     if (tab != null) {
       chrome.tabs.update(tab.id, {selected: true});
       return;
     }
     chrome.browserAction.setIcon({path:"img/chat.png"});
-    chrome.tabs.create({url: chatUrl}, function (tab) {
+    chrome.tabs.create({url: localStorage["chat_url"]}, function (tab) {
       // Login, setting nickname from options
       var chat_name = localStorage["chat_name"];
       chrome.tabs.executeScript(tab.id, {code:"document.getElementById('username').value = '" + chat_name + "'; document.getElementsByTagName('input')[2].click();"});
@@ -26,7 +24,6 @@ function openChat() {
   });
 }
 
-// Called when the user clicks on the browser action.
 chrome.browserAction.onClicked.addListener(function(tab) {
   openChat();
 });
