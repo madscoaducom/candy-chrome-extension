@@ -9,7 +9,7 @@
   "options_page": "options.html",
   "content_scripts": [{
     "matches": ["http://projects.koeniglich.ch/candy/*"],
-    "js": ["lib/jquery.min.js", "inject.js"]
+    "js": ["lib/jquery.min.js", "js/inject.js"]
   }],
   "permissions": [
     "tabs",
