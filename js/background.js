@@ -35,9 +35,6 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     } else {
       chrome.browserAction.setBadgeText({text: ''});
     }
-  } else if (request.message == 'NewChatMessage') {
-    var args = request.values;
-    console.log('GOT EVENT:' + args.nick + '(' + args.roomJid + '): ' + args.message); 
   }
 });
 

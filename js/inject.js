@@ -9,11 +9,12 @@ var ce = {};
             var room = $(this).children('.label').text();
             var unread = parseInt($(this).children('.unread').text());
             unread = isNaN(unread) ? 0 : unread;
-            if (status[room] && status[room] !== unread ) {
+            if (! status[room]) { 
+              status[room] = 0; 
+            }
+            if (status[room] !== unread ) {
                 status[room] = unread;
                 updated[room] = unread;
-            } else {
-                status[room] = unread;
             }
         });
         return updated;
@@ -30,11 +31,12 @@ var ce = {};
     function checkForUnreads() {
       var updated = ce.update();
       if (! $.isEmptyObject(updated)) {
-        console.log('Updated: ' + JSON.stringify(updated));
+//        console.log('Updated: ' + JSON.stringify(updated));
         chrome.extension.sendRequest({message: 'UnreadChatUpdate', values: ce.totalUnread()});
       }
       setTimeout('ce.checkForUnreads()',2000);
     }
+
     // "export" the defintion from the closure scope
     this.status = status;
     this.update = update;

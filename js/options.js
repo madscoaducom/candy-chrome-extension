@@ -17,8 +17,12 @@ function save_options() {
 function restore_options() {
   var chat_name = localStorage["chat_name"];
   var chat_url = localStorage["chat_url"];
-  if (!chat_url) { chat_url = "http://projects.koeniglich.ch/candy/"}
-
+  if (!chat_url) { 
+    localStorage["chat_url"] = chat_url = "http://projects.koeniglich.ch/candy/";
+  }
+  if (!chat_name) {
+    $("#chat_name").attr("placeholder","Your Nickname");
+  }
   if (chat_name) {
     $("#chat_name").val(chat_name);
   }
