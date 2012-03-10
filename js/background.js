@@ -59,14 +59,28 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
   }
 });
 
+var update = {};
+
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
   if (request.message == 'UnreadChatUpdate') {
-    if (request.values > 0) {
-      chrome.browserAction.setBadgeText({text: '' + request.values});
+    if (request.values.total > 0) {
+      update = request.values.updates;
+      chrome.browserAction.setBadgeText({text: '' + request.values.total});
+      var notification = webkitNotifications.createHTMLNotification('notification.html');
+      notification.show();
     } else {
       chrome.browserAction.setBadgeText({text: ''});
     }
+    sendResponse();
   }
 });
+
+function getUpdate() {
+  return update;
+}
+
+function clearUpdate() {
+  update = {};
+}
 
 getTab(localStorage['chat_url'], function(tab){ globalTabId = tab.id; injectContent(tab.id); showActive(); }, function(){ showInactive(); globalTabId = null; });
