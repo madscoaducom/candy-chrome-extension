@@ -3,15 +3,22 @@
     <title>New Chat Messages</title>
     <script type="text/javascript">
       window.onload = function(){
-          setTimeout("closeNotification()", 5000);
-          };
-      function closeNotification() {
-        window.close();
-      }
+            setTimeout("closeNotification()", 5000);
 
+            var update = chrome.extension.getBackgroundPage().getUpdate();
+            var view = document.getElementById('updatesView');
+            view.innerHTML = '';
+            for ( t in update ) {
+              view.innerHTML += '<p>' + t + ': ' + update[t] + ' updates</p>';
+            }
+      };
+      function closeNotification() {
+          window.close();
+      }
     </script>
   </head>
   <body>
-    <p>LIBSUM LIP</p>
+    <div id='updatesView'>
+  </div>
   </body>
 </html>
