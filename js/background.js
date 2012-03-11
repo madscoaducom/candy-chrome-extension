@@ -21,7 +21,7 @@ function getTab(tabUrl, foundCallback, notFoundCallback) {
       foundCallback(tabs[0]);
     }
     if (tabs.length > 1) {
-      console.log('Found multiple open tabs');
+      console.log('Found multiple open tabs with url: "' + tabUrl + '"');
     }
   });
 }
@@ -33,10 +33,10 @@ function injectContent(tabId){
 
 function openChat() {
   showActive();
-  chrome.tabs.create({url: localStorage["chat_url"]}, function (tab) {
+  chrome.tabs.create({url: get_options().chat_url}, function (tab) {
     // Login, setting nickname from options
     globalTabId = tab.id;
-    var chat_name = localStorage["chat_name"];
+    var chat_name = get_options().chat_name;
     chrome.tabs.executeScript(tab.id, {code:"document.getElementById('username').value = '" + chat_name + "'; document.getElementsByTagName('input')[2].click();"});
     injectContent(tab.id);
   });
@@ -49,7 +49,7 @@ function focusChat(tab) {
 }
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-   getTab(localStorage['chat_url'], focusChat, openChat);
+   getTab(get_options().chat_url, focusChat, openChat);
 });
 
 chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
@@ -83,4 +83,4 @@ function clearUpdate() {
   update = {};
 }
 
-getTab(localStorage['chat_url'], function(tab){ globalTabId = tab.id; injectContent(tab.id); showActive(); }, function(){ showInactive(); globalTabId = null; });
+getTab(get_options().chat_url, function(tab){ globalTabId = tab.id; injectContent(tab.id); showActive(); }, function(){ showInactive(); globalTabId = null; });

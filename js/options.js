@@ -1,32 +1,34 @@
-// Saves options to localStorage.
-function save_options() {
-  var chat_name = $("#chat_name").val();
-  var chat_url = $("#chat_url").val();
-  localStorage["chat_name"] = chat_name;
-  localStorage["chat_url"] = chat_url;
+function get_options() {
 
-  // Update status to let user know options were saved.
-  var status = $("#status");
-  status.innerHTML = "Options Saved.";
-  setTimeout(function() {
-    status.innerHTML = "";
-  }, 750);
+  var options = JSON.parse(localStorage['options'] === undefined ? '{}' : localStorage['options']);
+
+  if (options.chat_url === undefined) { 
+    options.chat_url = "http://projects.koeniglich.ch/candy/";
+  }
+
+  return options;
 }
 
-// Restores select box state to saved value from localStorage.
+function save_options() {
+  var options = _.reduce($('.option'), 
+      function (memo, x) { 
+        memo[x.id] = x.value; 
+        return memo; 
+      }, {});
+
+  localStorage['options'] = JSON.stringify(options);
+  chrome.extension.getBackgroundPage().options = options;
+
+  $('#status').show().fadeOut(1500);
+
+  return false; // stop further propogating of submit event
+}
+
 function restore_options() {
-  var chat_name = localStorage["chat_name"];
-  var chat_url = localStorage["chat_url"];
-  if (!chat_url) { 
-    localStorage["chat_url"] = chat_url = "http://projects.koeniglich.ch/candy/";
-  }
-  if (!chat_name) {
-    $("#chat_name").attr("placeholder","Your Nickname");
-  }
-  if (chat_name) {
-    $("#chat_name").val(chat_name);
-  }
-  if (chat_url) {
-    $("#chat_url").val(chat_url);
-  }
+
+  var options = get_options();
+
+  _.each(options, function (val, key) {
+    $('#' + key).val(val);
+  });
 }

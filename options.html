@@ -2,18 +2,28 @@
   <head>
     <title>Candy Chat Chrome Extension Options</title>
     <script src="lib/jquery.min.js" type="text/javascript"> </script>
+    <script src="lib/underscore-min.js" type="text/javascript"> </script>
     <script src="js/options.js" type="text/javascript"> </script>
+    <script type="text/javascript">
+      $().ready(function init() {
+          restore_options();
+          $('form').submit(save_options);
+          });
+    </script>
   </head>
-  <body onload="restore_options()">
+  <body>
 
-    <label> Chat server URL:</label>
-    <input type="text" id="chat_url" size="60"></input>
-    <br>
+    <form action="">
+      <label> Chat server URL:</label>
+      <input type="text" class="option" id="chat_url" size="60"/>
+      <br>
 
-    <label> Chat name:</label>
-    <input type="text" id="chat_name" size="30"></input>
+      <label> Chat name:</label>
+      <input type="text" class="option" id="chat_name" size="30"/>
 
-    <br>
-    <button onclick="save_options()">Save</button><p id="status"></p>
+      <br>
+      <button>Save</button>
+    </form>
+    <p id="status" style="display: none">Options saved</p>
   </body>
 </html>
