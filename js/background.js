@@ -27,7 +27,6 @@ function getTab(tabUrl, foundCallback, notFoundCallback) {
 }
 
 function injectContent(tabId){
-  chrome.tabs.executeScript(tabId, {file:'lib/jquery.min.js'});
   chrome.tabs.executeScript(tabId, {file:'js/inject.js'});
 }
 
@@ -61,17 +60,18 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 
 var update = {};
 
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-  if (request.message == 'UnreadChatUpdate') {
+chrome.extension.onRequest.addListener(function(request, sender) {
+  if (request.message == 'TotalUnreadChanged') {
     if (request.values.total > 0) {
-      update = request.values.updates;
       chrome.browserAction.setBadgeText({text: '' + request.values.total});
-      var notification = webkitNotifications.createHTMLNotification('notification.html');
-      notification.show();
     } else {
       chrome.browserAction.setBadgeText({text: ''});
     }
-    sendResponse();
+  }
+  if (request.message == 'UnreadMessages') {
+    update = request.values.changed;
+    var notification = webkitNotifications.createHTMLNotification('notification.html');
+    notification.show();
   }
 });
 
