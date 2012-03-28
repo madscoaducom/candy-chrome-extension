@@ -27,6 +27,11 @@ function getChanges (previousState, currentState) {
       updated[k] = v;
     }
   });
+  _.each(updated, function (v, k) {
+    if (v === 0) { 
+      delete updated[k];
+    }
+  });
   return updated;
 }
 module.exports.getChanges = getChanges;

@@ -44,9 +44,14 @@ suite('Scrape', function ScrapeSuite () {
       assert.equal(typeof(scrape.getStatus), "function");
     });
 
-    test('returns {} for all empty rooms', function () {
-      $('body').html(rooms.rooms2HTML(rooms.emptyRooms));
+    test('returns {} for no rooms in html', function () {
+      $('body').html('<p> No rooms shown</p>');
       assertEmpty(scrape.getStatus($));
+    });
+
+    test('returns unread as 0 for all empty rooms', function () {
+      $('body').html(rooms.rooms2HTML(rooms.emptyRooms()));
+      assert.ok(_.all(scrape.getStatus($), function (v) { return v === 0; }));
     });
 
     test('returns something when unread in room(s)', function () {
@@ -68,6 +73,10 @@ suite('Scrape', function ScrapeSuite () {
 
     test('returns {} when given empty states', function () {
       assertEmpty(scrape.getChanges({},{}));
+    });
+
+    test('returns {} when given states with 0 unreads', function () {
+      assertEmpty(scrape.getChanges({},{'1': 0, '2': 0}));
     });
 
     test('returns {} when given identical states', function () {
@@ -155,6 +164,11 @@ suite('Scrape', function ScrapeSuite () {
 
     test('is a function', function () {
       assert.equal(typeof(scrape.notifyUnreadIfChanged), "function");
+    });
+
+    test('all unreads 0 => no message sent', function () {
+      scrape.notifyUnreadIfChanged({}, {'1': 0, '2': 0}, notifier);
+      assert.equal(notifier.callCount, 0);
     });
 
     test('no change => no message sent', function () {
