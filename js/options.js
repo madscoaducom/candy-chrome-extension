@@ -6,13 +6,21 @@ function get_options() {
     options.chat_url = "http://projects.koeniglich.ch/candy/";
   }
 
+  if (options.show_notifications === undefined) { 
+    options.show_notifications = true;
+  }
+
   return options;
 }
 
 function save_options() {
   var options = _.reduce($('.option'), 
       function (memo, x) { 
-        memo[x.id] = x.value; 
+        if (x.type === "checkbox") {
+          memo[x.id] = x.checked; 
+        } else {
+          memo[x.id] = x.value; 
+        }
         return memo; 
       }, {});
 
@@ -30,5 +38,8 @@ function restore_options() {
 
   _.each(options, function (val, key) {
     $('#' + key).val(val);
+    if (val === true) {
+      $('#' + key).prop('checked', true);
+    }
   });
 }

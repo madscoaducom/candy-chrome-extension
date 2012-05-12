@@ -14,16 +14,23 @@
   <body>
 
     <form action="">
-      <label> Chat server URL:</label>
-      <input type="text" class="option" id="chat_url" size="60"/>
-      <br>
+      <fieldset>
+        <label> Chat server URL:</label>
+        <input type="text" class="option" id="chat_url" size="60"/>
+        <br>
 
-      <label> Chat name:</label>
-      <input type="text" class="option" id="chat_name" size="30"/>
+        <label> Chat name:</label>
+        <input type="text" class="option" id="chat_name" size="30"/>
+      </fieldset>
 
+      <fieldset>
+        <label> Show notifications:</label>
+        <input type="checkbox" class="option" id="show_notifications"/>
+      </fieldset>
       <br>
       <button>Save</button>
     </form>
+
     <p id="status" style="display: none">Options saved</p>
   </body>
 </html>

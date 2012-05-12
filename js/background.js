@@ -70,8 +70,10 @@ chrome.extension.onRequest.addListener(function(request, sender) {
   }
   if (request.message == 'UnreadMessages') {
     update = request.values.changed;
-    var notification = webkitNotifications.createHTMLNotification('notification.html');
-    notification.show();
+    if (get_options().show_notifications) {
+      var notification = webkitNotifications.createHTMLNotification('notification.html');
+      notification.show();
+    }
   }
 });
 
