@@ -78,6 +78,7 @@ chrome.extension.onRequest.addListener(function(request, sender) {
     update = request.values.changed;
     if (get_options().show_notifications) {
       var notification = webkitNotifications.createHTMLNotification('notification.html');
+      notification.onclick = function() { window.focus(); this.cancel(); };
       notification.show();
     }
   }

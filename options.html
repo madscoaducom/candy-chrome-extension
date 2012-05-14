@@ -1,9 +1,11 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Candy Chat Chrome Extension Options</title>
     <script src="lib/jquery.min.js" type="text/javascript"> </script>
     <script src="lib/underscore-min.js" type="text/javascript"> </script>
     <script src="js/options.js" type="text/javascript"> </script>
+    <link href="css/bootstrap.css" rel="stylesheet" />
     <script type="text/javascript">
       $().ready(function init() {
           restore_options();
@@ -13,24 +15,40 @@
   </head>
   <body>
 
-    <form action="">
+    <form class="well form-horizontal" action="">
       <fieldset>
-        <label> Chat server URL:</label>
-        <input type="text" class="option" id="chat_url" size="60"/>
-        <br>
+        <div class="control-group">
+          <label class="control-label" for="chat_url"> Chat server URL:</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge option" id="chat_url" />
+            <p class="help-block">Example: http://dev.openflex.net/candy/ </p>
+          </div>
+        </div>
 
-        <label> Chat name:</label>
-        <input type="text" class="option" id="chat_name" size="30"/>
-      </fieldset>
+        <div class="control-group">
+          <label class="control-label" for="chat_name">Chat name:</label>
+          <div class="controls">
+            <input type="text" class="input-large option" id="chat_name" />
+            <p class="help-block">Nickname used to identify yourself</p>
+          </div>
+        </div>
 
-      <fieldset>
-        <label> Show notifications:</label>
-        <input type="checkbox" class="option" id="show_notifications"/>
+        <div class="control-group">
+          <label class="control-label" for="optionsCheckbox">Notifications</label>
+          <div class="controls">
+            <label class="checkbox">
+              <input type="checkbox" class="option" id="show_notifications"/>
+              Show desktop notifiation/popup when new (unread) messages arrive
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary">Save</button>
+          <div id="status" style="display: none">Options saved</div>
+        </div>
       </fieldset>
-      <br>
-      <button>Save</button>
     </form>
 
-    <p id="status" style="display: none">Options saved</p>
   </body>
 </html>
