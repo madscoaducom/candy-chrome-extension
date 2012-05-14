@@ -37,6 +37,25 @@ suite('Scrape', function ScrapeSuite () {
 
   });
 
+  suite('loginPopupShown()', function getStatusSuite () {
+
+    test('is a function', function () {
+      assert.ok(scrape);
+      assert.equal(typeof(scrape.loginPopupShown), "function");
+    });
+
+    test('returns false for no login popup in html', function () {
+      $('body').html('<p> No login popup shown</p>');
+      assert.equal(scrape.loginPopupShown($), false);
+    });
+
+    test('returns true when login popup is in html', function () {
+      $('body').html('<p> <div id="chat-modal" style="display: block; "><a id="admin-message-cancel" class="close" href="#" style="display: none; ">×</a><span id="chat-modal-body"><form method="post" id="login-form" class="login-form"><label for="username">Username:</label><input type="text" id="username" name="username"><input type="hidden" id="username" name="username" value="conference.xleap.apmoller.net"><input type="submit" class="button" value="Login"></form></span><img src="res/img/modal-spinner.gif" id="chat-modal-spinner" style="display: none; "></div> </p>');
+      assert.equal(scrape.loginPopupShown($), true);
+    });
+
+  });
+
   suite('getStatus()', function getStatusSuite () {
 
     test('is a function', function () {

@@ -3,7 +3,7 @@ function get_options() {
   var options = JSON.parse(localStorage['options'] === undefined ? '{}' : localStorage['options']);
 
   if (options.chat_url === undefined) { 
-    options.chat_url = "http://projects.koeniglich.ch/candy/";
+    options.chat_url = "http://dev.openflex.net/candy/";
   }
 
   if (options.show_notifications === undefined) { 

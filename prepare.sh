@@ -1,1 +1,1 @@
-browserify lib/jquery.min.js lib/underscore-min.js js/scrape.js -o js/inject.js
+browserify lib/jquery.min.js lib/underscore-min.js src/inject.js -o js/inject.js

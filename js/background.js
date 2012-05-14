@@ -26,22 +26,25 @@ function getTab(tabUrl, foundCallback, notFoundCallback) {
   });
 }
 
-function injectContent(tabId){
+function injectContent (tabId) {
   chrome.tabs.executeScript(tabId, {file:'js/inject.js'});
 }
 
-function openChat() {
+function login (tabId) {
+  // Supports nickname for now
+  chrome.tabs.executeScript(tabId, {code:"document.getElementById('username').value = '" + get_options().chat_name + "'; document.getElementsByTagName('input')[2].click();"});
+}
+
+function openChat () {
   showActive();
   chrome.tabs.create({url: get_options().chat_url}, function (tab) {
-    // Login, setting nickname from options
     globalTabId = tab.id;
-    var chat_name = get_options().chat_name;
-    chrome.tabs.executeScript(tab.id, {code:"document.getElementById('username').value = '" + chat_name + "'; document.getElementsByTagName('input')[2].click();"});
+    login(tab.id);
     injectContent(tab.id);
   });
 }
 
-function focusChat(tab) {
+function focusChat (tab) {
   if (tab) {
     chrome.tabs.update(tab.id, {selected: true});
   }
@@ -61,6 +64,9 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 var update = {};
 
 chrome.extension.onRequest.addListener(function(request, sender) {
+  if (request.message == 'ReLogin') {
+    login(globalTabId);
+  }
   if (request.message == 'TotalUnreadChanged') {
     if (request.values.total > 0) {
       chrome.browserAction.setBadgeText({text: '' + request.values.total});
@@ -86,3 +92,4 @@ function clearUpdate() {
 }
 
 getTab(get_options().chat_url, function(tab){ globalTabId = tab.id; injectContent(tab.id); showActive(); }, function(){ showInactive(); globalTabId = null; });
+

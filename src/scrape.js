@@ -1,5 +1,10 @@
 var _ = require('underscore');
 
+function loginPopupShown (jQ) {
+  return jQ('#login-form').length !== 0;
+}
+module.exports.loginPopupShown = loginPopupShown;
+
 function getStatus (jQ) {
   var st = _.reduce(jQ('li[class^=roomtype-]'),
       function (memo, x) { 
@@ -19,7 +24,7 @@ function getChanges (previousState, currentState) {
   _.each(previousState, function (v, k) {
     if (k in updated) { 
       if (updated[k] === v) { 
-        delete updated[k]; 
+        delete updated[k];
       } else {
         updated[k] -= v;
       }
@@ -63,16 +68,24 @@ function notifyUnreadIfChanged(previousState, currentState, notify) {
 }
 module.exports.notifyUnreadIfChanged = notifyUnreadIfChanged;
 
+function notifyReLogin(notify) {
+  notify({message: 'ReLogin', });
+}
+module.exports.notifyTotalIfChanged = notifyTotalIfChanged;
+    
 function setup () {
   var timer = null;
   var previousState = {};
   var previousTotal = 0;
 
   var monitor = function () {
+    if (loginPopupShown($)) {
+      notifyReLogin(chrome.extension.sendRequest);
+      return; // Skip rest until log'ed in
+    }
+
     var currentState = getStatus($);
     var currentTotal = totalUnread(currentState);
-
-    console.log('Total: ' + currentTotal);
 
     notifyTotalIfChanged(
         previousTotal, 
